@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surpresa 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:'Fredoka',sans-serif;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ff4fa3,#ffb6d9,#fff0f7);
+overflow:hidden;
+position:relative;
+}
+
+/* glitter anos 2000 */
+body::before{
+content:"✨ 💖 ✨ 💖 ✨ 💖 ✨ 💖 ✨";
+position:absolute;
+font-size:22px;
+opacity:.3;
+animation:float 6s linear infinite;
+pointer-events: none;
+z-index:0;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+100%{transform:translateY(-200px);}
+}
+
+.card{
+background:rgba(255,255,255,.25);
+backdrop-filter:blur(10px);
+border:3px solid white;
+padding:25px;
+border-radius:25px;
+width:90%;
+max-width:520px;
+text-align:center;
+color:white;
+box-shadow:0 0 25px rgba(255,255,255,.4);
+z-index:10;
+}
+
+button{
+margin:8px;
+padding:14px 22px;
+border:none;
+border-radius:22px;
+font-weight:900;
+cursor:pointer;
+background:linear-gradient(145deg,#ffffff,#ffd5f3 30%,#ff9fd4 60%,#ff6bbf);
+color:#87134f;
+box-shadow:0 12px 25px rgba(255,77,175,.45), inset 0 -3px 0 rgba(255,255,255,.7);
+text-shadow:0 1px 2px rgba(255,255,255,.8);
+transition:.2s ease, transform .15s ease;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 18px 28px rgba(255,77,175,.35), inset 0 -4px 0 rgba(255,255,255,.85);
+}
+
+button:focus-visible{
+outline:2px solid rgba(255,255,255,.9);
+outline-offset:4px;
+}
+
+.text-input{
+width:100%;
+margin:10px 0;
+padding:14px 16px;
+background:rgba(255,255,255,.95);
+border:2px solid rgba(255,255,255,.7);
+border-radius:18px;
+font-size:1rem;
+color:#331321;
+transition:.2s ease;
+}
+
+.text-input:focus{
+border-color:#ff6bbf;
+box-shadow:0 0 0 4px rgba(255,107,191,.14);
+outline:none;
+}
+
+button:active{
+transform:translateY(3px);
+box-shadow:0 6px 10px rgba(255,77,175,.25);
+}
+
+.poster-title{
+font-size:2.2rem;
+font-weight:900;
+color:#000;
+text-transform:uppercase;
+letter-spacing:.18rem;
+padding:12px 18px;
+background:none;
+-webkit-background-clip:none;
+-webkit-text-fill-color:initial;
+text-shadow:0 0 10px rgba(0,0,0,.1);
+border:6px solid rgba(0,0,0,.15);
+border-radius:28px;
+display:inline-block;
+margin-bottom:18px;
+}
+
+button.jump{
+animation:jump .25s ease;
+}
+
+@keyframes jump{
+0%{transform:translateY(0);}
+50%{transform:translateY(-12px);}
+100%{transform:translateY(0);}
+}
+
+#quiz,#resultado,#final{display:none;}
+
+.question{font-size:26px;}
+
+.share-note{
+margin-top:18px;
+font-size:1rem;
+color:#ffd6ee;
+letter-spacing:.06rem;
+text-shadow:0 0 10px rgba(255,255,255,.45);
+}
+
+.small-note{
+display:block;
+margin-top:12px;
+font-size:.95rem;
+color:#ffe4f2;
+opacity:.95;
+}
+
+.overlay{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle at center, rgba(255,255,255,.25), rgba(0,0,0,.85));
+display:none;
+align-items:center;
+justify-content:center;
+z-index:100;
+}
+
+.overlay.active{
+display:flex;
+}
+
+.overlay-content{
+text-align:center;
+color:#fff;
+max-width:90%;
+padding:20px;
+}
+
+.bomb-icon{
+font-size:5.5rem;
+line-height:1;
+text-shadow:0 0 40px rgba(255,255,255,.65), 0 0 60px rgba(255,90,150,.35);
+}
+
+#overlayMessage{
+margin-top:20px;
+font-size:1.5rem;
+font-weight:800;
+letter-spacing:.06rem;
+text-transform:uppercase;
+}
+
+#overlayCountdown{
+margin-top:18px;
+font-size:4rem;
+font-weight:900;
+letter-spacing:.18rem;
+}
+
+@keyframes flashScreen{
+0%{background:radial-gradient(circle at center, rgba(255,255,255,.35), rgba(0,0,0,.85));}
+50%{background:radial-gradient(circle at center, rgba(255,255,255,.05), rgba(0,0,0,.95));}
+100%{background:radial-gradient(circle at center, rgba(255,255,255,.35), rgba(0,0,0,.85));}
+}
+
+.overlay.active{
+animation:flashScreen .4s linear infinite;
+}
+
+.final-handle{
+margin:0;
+font-size:1rem;
+color:#ff2f92;
+font-weight:800;
+letter-spacing:.05rem;
+}
+
+.final-cover{
+position:relative;
+padding:18px 18px 10px;
+background:transparent;
+border:none;
+border-radius:0;
+backdrop-filter:none;
+}
+
+.final-cover h1{
+font-size:2rem;
+letter-spacing:.12rem;
+text-transform:uppercase;
+color:#000;
+margin:1rem 0 .2rem;
+text-shadow:0 0 12px rgba(0,0,0,.1);
+}
+
+.final-handle{
+margin:0;
+font-size:1rem;
+color:#ff2f92;
+font-weight:800;
+letter-spacing:.05rem;
+}
+
+.magazine-tag{
+position:absolute;
+top:16px;
+left:16px;
+padding:8px 14px;
+background:#fff;
+color:#ff2f92;
+font-weight:800;
+font-size:.78rem;
+border-radius:999px;
+letter-spacing:.08rem;
+box-shadow:0 4px 14px rgba(0,0,0,.1);
+}
+
+.superstar{
+position:absolute;
+bottom:16px;
+right:16px;
+color:#fff;
+font-size:.9rem;
+font-weight:800;
+text-shadow:0 0 14px rgba(255,255,255,.9);
+}
+
+.barbied-car{
+position:relative;
+width:260px;
+height:160px;
+margin:0 auto 18px;
+background:linear-gradient(135deg,#ff84c4,#ff52a7);
+border-radius:85px 85px 42px 42px;
+box-shadow:0 22px 40px rgba(255,0,150,.25);
+overflow:hidden;
+}
+
+.barbied-car::before,
+.barbied-car::after{
+content:"";
+position:absolute;
+width:72px;
+height:72px;
+border-radius:50%;
+background:rgba(255,255,255,.35);
+}
+
+.barbied-car::before{
+left:20px;
+top:-18px;
+}
+
+.barbied-car::after{
+right:20px;
+top:-10px;
+}
+
+.car-window{
+position:absolute;
+top:18px;
+left:50%;
+transform:translateX(-50%);
+width:180px;
+height:70px;
+background:rgba(255,255,255,.35);
+border-radius:40px;
+backdrop-filter:blur(8px);
+}
+
+.car-body{
+position:absolute;
+left:12px;
+right:12px;
+bottom:12px;
+height:70px;
+background:rgba(255,255,255,.18);
+border-radius:40px;
+border:2px solid rgba(255,255,255,.5);
+}
+
+/* confete */
+.confetti{
+position:absolute;
+width:10px;
+height:10px;
+top:-20px;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+to{transform:translateY(110vh) rotate(720deg);opacity:0;}
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="intro" class="card">
+<h1 class="poster-title">Você não se atreveria 😏</h1>
+<h2>Você vai fazer um teste 💖✨</h2>
+<input id="playerName" class="text-input" type="text" placeholder="Seu nome aqui">
+<input id="crushName" class="text-input" type="text" placeholder="Nome do crush">
+<button id="startBtn" type="button">COMEÇAR</button>
+</div>
+
+<div id="quiz" class="card">
+<div id="pergunta" class="question"></div>
+<div id="opcoes"></div>
+<p class="share-note">Repassa esse link 👿</p>
+</div>
+
+<div id="resultado" class="card"></div>
+
+<div id="final" class="card">
+  <div class="final-cover">
+    <h1>Duvido vc seguir seu crush hoje 😏</h1>
+    <p class="final-handle">@anaestrannm</p>
+  </div>
+</div>
+
+<div id="explosionOverlay" class="overlay">
+  <div class="overlay-content">
+    <div class="bomb-icon" id="bombIcon">💣</div>
+    <div id="overlayMessage">Ops... tela piscando</div>
+    <div id="overlayCountdown">3</div>
+  </div>
+</div>
+
+<audio id="somStart" preload="auto">
+  <source src="confete.mp3" type="audio/mpeg">
+</audio>
+<audio id="somClique" preload="auto">
+  <source src="confete.mp3" type="audio/mpeg">
+</audio>
+<audio id="somExplosao" preload="auto">
+  <source src="explosao.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const perguntas=[
+["seu crush tem cabelo loiro ou escuro?","loiro 💖","escuro 💀"],
+["Vocês se seguem?","Sim 👀","Não 😇"],
+["Você ja stalkeou ele?","Sim 😏","Não 😌"],
+["Você namooraria com ele?","Sim 💖","Não 🤨"],
+["Seu crush estuda na mesma sala?","Sim 🌎","Não 😂"],
+["Você ficaria com ele(a)?","Sim 💖","Não 🤨"]
+];
+
+let i=0;
+let pontos=0;
+let userName = 'Você';
+let crushName = 'seu crush';
+
+/* botão seguro */
+const introCard = document.getElementById("intro");
+const quizCard = document.getElementById("quiz");
+const resultCard = document.getElementById("resultado");
+const finalCard = document.getElementById("final");
+const playerInput = document.getElementById("playerName");
+const crushInput = document.getElementById("crushName");
+
+function initInteraction(){
+  const startBtn = document.getElementById("startBtn");
+  startBtn.addEventListener("click",(e)=>{
+    e.preventDefault();
+    jump(e.currentTarget);
+    start();
+  });
+
+  document.addEventListener("keydown",(e)=>{
+    if(e.key === "Enter" && window.getComputedStyle(introCard).display !== "none"){
+      e.preventDefault();
+      startBtn.click();
+    }
+  });
+}
+
+initInteraction();
+
+function start(){
+  i = 0;
+  pontos = 0;
+  const playerValue = playerInput.value.trim();
+  const crushValue = crushInput.value.trim();
+  userName = playerValue || 'Você';
+  crushName = crushValue || 'seu crush';
+  const startAudio = document.getElementById("somStart");
+  startAudio.currentTime = 0;
+  startAudio.play().catch(()=>{});
+  introCard.style.display = "none";
+  resultCard.style.display = "none";
+  finalCard.style.display = "none";
+  quizCard.style.display = "block";
+  load();
+}
+
+function jump(el){
+  el.classList.add("jump");
+  setTimeout(()=>el.classList.remove("jump"),250);
+}
+
+/* som clique leve */
+// WebAudio fallback (if audio files are missing or blocked)
+const audioCtx = (function(){
+  try { return new (window.AudioContext || window.webkitAudioContext)(); } catch(e){ return null; }
+})();
+
+function beep(freq=440, duration=0.1, type='sine', gain=0.2){
+  if(!audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  g.gain.setValueAtTime(gain, audioCtx.currentTime);
+  o.connect(g);
+  g.connect(audioCtx.destination);
+  o.start();
+  o.stop(audioCtx.currentTime + duration);
+}
+
+function tryPlayAudio(id, fallback){
+  const el = document.getElementById(id);
+  if(!el) { if(fallback) fallback(); return; }
+  try{
+    el.currentTime = 0;
+    const p = el.play();
+    if(p && p.catch) p.catch(()=>{ if(fallback) fallback(); });
+  }catch(e){ if(fallback) fallback(); }
+}
+
+function pop(){
+  tryPlayAudio('somClique', ()=>beep(880,0.06,'sine',0.18));
+}
+
+function boom(){
+  tryPlayAudio('somExplosao', ()=>{
+    // simple explosion-ish effect: quick descending buzz
+    if(!audioCtx) return;
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(220, audioCtx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.6);
+    g.gain.setValueAtTime(0.6, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.start();
+    o.stop(audioCtx.currentTime + 0.8);
+  });
+}
+
+function load(){
+
+if(i>=perguntas.length){
+end();
+return;
+}
+
+let p=perguntas[i];
+document.getElementById("pergunta").innerText=p[0];
+
+let op=document.getElementById("opcoes");
+op.innerHTML="";
+
+for(let j=1;j<3;j++){
+
+let b=document.createElement("button");
+b.innerText=p[j];
+
+b.onclick=()=>{
+
+pop();
+jump(b);
+
+if(j===1) pontos++;
+
+i++;
+load();
+
+};
+
+op.appendChild(b);
+}
+}
+
+function end(){
+
+document.getElementById("quiz").style.display="none";
+
+let r=document.getElementById("resultado");
+r.style.display="block";
+
+r.innerHTML="Calculando resultado... 💖✨";
+
+r.innerHTML = `Você fez ${pontos}/${perguntas.length} 💖<span class="small-note">${userName} e ${crushName} estão de olho 👀</span>`;
+
+if(pontos>=4){
+  confete();
+  boom();
+}
+
+setTimeout(()=>{
+  r.style.display="none";
+  showExplosionSequence();
+},2000);
+}
+
+function showExplosionSequence(){
+  const overlay = document.getElementById("explosionOverlay");
+  const message = document.getElementById("overlayMessage");
+  const countdown = document.getElementById("overlayCountdown");
+  const bombIcon = document.getElementById("bombIcon");
+  const bombAudio = document.getElementById("somExplosao");
+
+  overlay.classList.add("active");
+  message.textContent = "Ops";
+  bombIcon.textContent = "💣";
+  countdown.textContent = "3";
+
+  let step = 3;
+  const interval = setInterval(()=>{
+    bombAudio.currentTime = 0;
+    bombAudio.play().catch(()=>{});
+    if(step > 1){
+      step -= 1;
+      countdown.textContent = String(step);
+    } else {
+      clearInterval(interval);
+      bombIcon.textContent = "💥";
+      message.textContent = "Seu crush acabou de receber essas informações..";
+      countdown.textContent = "";
+      bombAudio.currentTime = 0;
+      bombAudio.play().catch(()=>{});
+      setTimeout(()=>{
+        message.textContent = "Brincadeirinha 😂🤣";
+        setTimeout(()=>{
+          overlay.classList.remove("active");
+          document.getElementById("final").style.display = "block";
+        }, 1400);
+      }, 1800);
+    }
+  }, 1200);
+}
+
+/* confete pesado */
+function confete(){
+
+for(let i=0;i<180;i++){
+
+let c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+c.style.width = `${8 + Math.random() * 10}px`;
+c.style.height = `${8 + Math.random() * 10}px`;
+c.style.background = `hsl(${Math.random()*360},100%,60%)`;
+c.style.transform = `rotate(${Math.random()*360}deg)`;
+c.style.animationDuration = `${2 + Math.random()*1.5}s`;
+document.body.appendChild(c);
+
+setTimeout(()=>c.remove(),5000);
+}
+
+}
+
+</script>
+
+</body>
+</html>
